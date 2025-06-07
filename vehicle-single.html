@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Vehicle Details</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="hasTitlebar">
+
+  <div class="bg"></div>
+
+<div class="pageHead" id="maintTab">
+  <div class="titleBar">
+    <div class="titleBtn"><a href="index.html"><img src="images/icons/back.svg" alt="">&nbsp; Back</a></div>
+    <div id="odoUpdateBtn" class="titleBtn odometerEdit"><a href="#">Update Odo</a></div>
+  </div>
+</div>
+    
+  <!-- 🔷 VEHICLE HEADER INFO -->
+  <h1 id="vehicleTitle">Vehicle Name</h1>
+  <div class="vehicleHeader">
+    <div class="nameplateContainer">
+      <div id="regNumber" class="nameplate"><div class="nameplateContent">XX XX XX XXXX</div></div>
+    </div>
+    <!-- 🧭 Current Odometer -->
+    <div class="odoContainer">
+      <div class="odoBG"></div>
+      <div id="odoDate" class="odoDate">-</div>
+      <div id="odometerValue" class="odometer">—</div>
+
+    </div>
+  </div>
+  <!-- 🖼️ Image Gallery -->
+  <div id="imageGallery" class="imageGallery"></div>
+
+
+  <h2 class="sectionHeading">Reported Issues</h2>
+  <ul id="issueList" class="issueList"></ul>
+
+  <!-- 📂 TAB PANELS -->
+  <div class="tabPanel active">
+    <h2>Info</h2>
+    <ul id="specList" class="cardGrid"></ul>
+  </div>
+  
+  <div id="maintTab" class="tabPanel">
+
+    <h2>Maintenance by Parts</h2>
+    <table id="maintenanceTable" class="maintenanceTable">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Last Service</th>
+          <th>Next Service</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <h2 class="sectionHeading">Full Maintenance History</h2>
+    <table id="maintenanceHistoryTable" class="maintenanceTable">
+      <thead>
+        <tr>
+          <th>Odometer</th>
+          <th>Date</th>
+          <th>Total Cost</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="docsTab" class="tabPanel">
+    <h2>Documents</h2>
+    <ul id="documentList" class="issueList"></ul>
+  </div>
+
+  <!-- ✏️ Odometer Update Popup -->
+  <div id="odoPopup" class="popup hidden">
+    <div class="popupContent">
+      <label for="odoInput" class="popLabel">Enter New Odometer Reading</label>
+      <input type="number" id="odoInput" />
+      <button id="odoSaveBtn">Save</button>
+      <button id="odoCancelBtn" class="secondary">Cancel</button>
+    </div>
+  </div>
+
+  <ul class="mainNav">
+    <li class="active"><a href="index.html"><div><img src="images/icons/home.svg" alt=""></div> <div>Home</div></a></li>
+    <li><a href="service.html"><div><img src="images/icons/services.svg" alt=""></div> <div>Service</div></a></li>
+    <li><a href="report-issue.html"><div><img src="images/icons/report.svg" alt=""></div> <div>Report</div></a></li>
+  </ul>
+
+  <script src="js/common.js"></script>
+  <script src="js/data-fetch.js"></script>
+  <script src="js/vehicle-single.js"></script>
+</body>
+</html>

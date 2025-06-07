@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Vehicle List</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <div class="bg"></div>
+  
+<div class="header">
+  <div id="userGreetingArea"></div>
+  
+  <div class="filterSearch">
+    <!-- 🔘 Toggle Button -->
+    <button id="toggleFiltersBtn" class="iconButton"><img src="images/icons/filter.svg" alt=""></button>
+    
+    <!-- 🔍 Search Bar -->
+    <div class="searchWrapper">
+      <input type="text" id="vehicleSearch" placeholder="Search vehicles..." />
+    </div>
+  </div>
+
+  <!-- 🔍 Filter + Sort Panel (Hidden by Default) -->
+  <section class="filterSortPanel hidden">
+    <div class="filters">
+      <div id="filterOwnerGroup" class="filterGroup"><h2>Owner(s):</h2></div>
+      <div id="filterRcOwnerGroup" class="filterGroup"><h2>RC Owner:</h2></div>
+      <div id="filterClassGroup" class="filterGroup"><h2>Class:</h2></div>
+      <div id="filterCategoryGroup" class="filterGroup"><h2>Category:</h2></div>
+      <div id="filterGearboxGroup" class="filterGroup"><h2>Gearbox:</h2></div>
+      <div id="filterFuelTypeGroup" class="filterGroup"><h2>Fuel Type:</h2></div>
+      <div id="filterColorGroup" class="filterGroup"><h2>Colors:</h2></div>
+      <div id="filterDrivetrainGroup" class="filterGroup"><h2>Drivetrain:</h2></div>
+      <div id="filterMakeGroup" class="filterGroup"><h2>Make:</h2></div>
+    </div> 
+  </section>
+  
+  <!-- 🧩 Group By Dropdown -->
+  <div class="row sortNgroup">
+    <div class="colTwo">
+      <label for="groupByOption">Group by</label>
+      <select id="groupByOption">
+        <option value="owners">Mine &amp; Shared</option>
+        <option value="class">Class</option>
+        <option value="category">Category</option>
+        <option value="rcOwner">RC Owner</option>
+        <option value="gearbox">Gearbox</option>
+        <option value="fuelType">Fuel Type</option>
+        <option value="colors">Colors</option>
+        <option value="drivetrain">Drivetrain</option>
+        <option value="make">Make</option>
+        <option value="none">None</option>
+      </select>
+    </div>
+    
+    <!-- Sort -->
+    <div class="colTwo">
+      <label for="sortOption">Sort by</label>
+      <select id="sortOption">
+        <option value="">Default</option>
+        <option value="modelYear">Model Year</option>
+        <option value="registrationNumber">Registration Year</option>
+        <option value="owningDate">Owning Date</option>
+        <option value="displacement">Displacement</option>
+        <option value="power">Power</option>
+        <option value="torque">Torque</option>
+        <option value="fuelEconomy">Fuel Economy</option>
+      </select>
+    </div>
+  </div>
+</div>
+  
+
+  
+  <!-- <h1>My Vehicles</h1> -->
+  <!-- 🚗 Vehicle Cards -->
+  <section id="vehicleList" class="vehicleListContainer"></section>
+
+<ul class="mainNav">
+  <li class="active"><a href="index.html"><div><img src="images/icons/home.svg" alt=""></div> <div>Home</div></a></li>
+  <li><a href="service.html"><div><img src="images/icons/services.svg" alt=""></div> <div>Service</div></a></li>
+  <li><a href="report-issue.html"><div><img src="images/icons/report.svg" alt=""></div> <div>Report</div></a></li>
+</ul>
+
+<div class="version">0.2.0 250606-1</div>
+
+  <script src="js/common.js"></script>
+  <script src="js/data-fetch.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

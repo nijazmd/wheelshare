@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Vehicle Issue</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <h1 class="pageTitle">Report Vehicle Issue</h1>
+  <form id="issueForm" class="formCard">
+    <label>
+      Select Vehicle:
+      <select id="vehicleSelect" required></select>
+    </label>
+
+    <label>
+      Your Name:
+      <input type="text" id="reporterName" required/>
+    </label>
+
+    <label>
+      Date:
+      <input type="date" id="reportDate" required />
+    </label>
+
+    <label>
+      Describe the Issue:
+      <textarea id="issueText" rows="4" required></textarea>
+    </label>
+
+    <div class="buttonRow">
+      <button class="actionBtn" type="submit">Submit Issue</button>
+    </div>
+  </form>
+
+  <ul class="mainNav">
+    <li><a href="index.html"><div><img src="images/icons/home.svg" alt=""></div> <div>Home</div></a></li>
+    <li><a href="service.html"><div><img src="images/icons/services.svg" alt=""></div> <div>Service</div></a></li>
+    <li class="active"><a href="report-issue.html"><div><img src="images/icons/report.svg" alt=""></div> <div>Report</div></a></li>
+  </ul>
+
+  <div id="loaderOverlay" class="loader hidden">
+    <div class="spinner"></div>
+    <div class="loaderText">Submitting...</div>
+  </div>
+  
+
+  <script src="js/common.js"></script>
+  <script src="js/data-fetch.js"></script>
+  <script src="js/report-issue.js"></script>
+
+  
+</body>
+</html>

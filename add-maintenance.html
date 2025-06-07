@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Add Maintenance</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="hasTitlebar">
+
+  <div class="pageHead" id="maintTab">
+    <div class="titleBar">
+      <div class="titleBtn"><a href="service.html"><img src="images/icons/back.svg" alt="">&nbsp; Back</a></div>
+    </div>
+  </div>
+
+  <h1>Add Maintenance</h1>
+
+  <!-- Vehicle Selector -->
+  <div class="formGroup">
+    <label for="vehicleSelect">Select Vehicle:</label>
+    <select id="vehicleSelect"></select>
+  </div>
+
+  <!-- Maintenance Form -->
+  <form id="maintenanceForm" class="formGroup">
+    <label for="maintDate">Date:
+      <input type="date" id="maintDate" required />
+    </label>
+
+    <label for="maintOdometer">Odometer:
+      <input type="number" id="maintOdometer" required />
+    </label>
+
+    <label for="workshopName">Workshop:
+      <input type="text" id="workshopName" />
+    </label>
+
+    <div id="serviceItemsContainer"></div>
+
+    <label>Labour Charges:
+      <input type="number" id="labourCharges" />
+    </label>  
+
+    <datalist id="serviceSuggestions">
+      <option value="Engine Oil">
+      <option value="Brake Pads">
+      <option value="Coolant">
+      <option value="Battery">
+      <option value="Tyres">
+      <option value="AC Service">
+    </datalist>
+    
+  
+
+    <div class="formBtns buttonRow">
+      <button class="actionBtn" type="button" id="addServiceItemBtn">Add Another Service</button>
+      <button class="actionBtn" type="submit">Submit Maintenance</button>
+    </div>
+  </form>
+
+  <ul class="mainNav">
+    <li><a href="index.html"><div><img src="images/icons/home.svg" alt=""></div> <div>Home</div></a></li>
+    <li class="active"><a href="service.html"><div><img src="images/icons/services.svg" alt=""></div> <div>Service</div></a></li>
+    <li><a href="report-issue.html"><div><img src="images/icons/report.svg" alt=""></div> <div>Report</div></a></li>
+  </ul>
+
+  <div id="loaderOverlay" class="loader hidden">
+    <div class="spinner"></div>
+    <div class="loaderText">Submitting...</div>
+  </div>
+  
+  <script src="js/common.js"></script>
+  <script src="js/data-fetch.js"></script>
+  <script src="js/add.js"></script>
+</body>
+</html>

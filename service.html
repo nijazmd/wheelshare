@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Upcoming Services</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="divGroup">
+    <h2>🔧 Upcoming Services</h2>
+    <div class="tableWrapper">
+      <table id="serviceTable">
+        <thead>
+          <tr>
+            <th>Vehicle</th>
+            <th>Odometer</th>
+            <th>Next Due</th>
+            <th>Remaining</th>
+          </tr>
+        </thead>
+        <tbody id="serviceTableBody"></tbody>
+      </table>
+    </div>
+    <div class="buttonRow">
+      <a href="add-maintenance.html" class="actionBtn">➕ Add Maintenance</a>
+    </div>
+  </div>
+  <div class="divGroup">
+    <h2>📄 Expiring Documents</h2>
+    <div class="tableWrapper">
+      <table id="documentTable">
+        <thead>
+          <tr>
+            <th>Vehicle</th>
+            <th>Document</th>
+            <th>Expiry Date</th>
+            <th>Days Left</th>
+          </tr>
+        </thead>
+        <tbody id="documentTableBody"></tbody>
+      </table>
+    </div>
+    <div class="buttonRow">
+      <a href="add-document.html" class="actionBtn">➕ Add Document</a>
+    </div>
+  </div>
+
+
+<ul class="mainNav">
+  <li><a href="index.html"><div><img src="images/icons/home.svg" alt=""></div> <div>Home</div></a></li>
+  <li class="active"><a href="service.html"><div><img src="images/icons/services.svg" alt=""></div> <div>Service</div></a></li>
+  <li><a href="report-issue.html"><div><img src="images/icons/report.svg" alt=""></div> <div>Report</div></a></li>
+</ul>
+
+
+  <script src="js/common.js"></script>
+  <script src="js/data-fetch.js"></script>
+  <script src="js/service.js"></script>
+</body>
+</html>

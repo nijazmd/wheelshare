@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Add Document</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="hasTitlebar">
+
+  <div class="pageHead" id="maintTab">
+    <div class="titleBar">
+      <div class="titleBtn"><a href="service.html"><img src="images/icons/back.svg" alt="">&nbsp; Back</a></div>
+    </div>
+  </div>
+
+  <h1>Add Document</h1>
+
+  <div class="formGroup">
+    <label for="vehicleSelect">Select Vehicle:</label>
+    <select id="vehicleSelect"></select>
+  </div>
+
+  <form id="documentForm" class="docForm formGroup">
+    <label for="docType">Document Type:
+      <select id="docType" required>
+        <option value="">-- Select Type --</option>
+        <option value="Insurance">Insurance</option>
+        <option value="PUC">Polution Under Control (PUC)</option>
+        <option value="Tax">Tax</option>
+        <option value="Registration">RC</option>
+      </select>
+    </label>
+
+    <label for="docIssueDate">Issue Date:
+      <input type="date" id="docIssueDate" required />
+    </label>
+
+    <label for="docExpiryDate">Expiry Date:
+      <input type="date" id="docExpiryDate" required />
+    </label>
+
+    <label for="docNotes">Agency Name, Phone Number & Notes:
+      <textarea id="docNotes"></textarea>
+    </label>
+
+    <div class="buttonRow">
+      <button class="actionBtn" type="submit">Submit Document</button>
+    </div>
+  </form>
+
+  <ul class="mainNav">
+    <li><a href="index.html"><div><img src="images/icons/home.svg" alt=""></div> <div>Home</div></a></li>
+    <li class="active"><a href="service.html"><div><img src="images/icons/services.svg" alt=""></div> <div>Service</div></a></li>
+    <li><a href="report-issue.html"><div><img src="images/icons/report.svg" alt=""></div> <div>Report</div></a></li>
+  </ul>
+
+  <div id="loaderOverlay" class="loader hidden">
+    <div class="spinner"></div>
+    <div class="loaderText">Submitting...</div>
+  </div>
+  
+
+  <script src="js/common.js"></script>
+  <script src="js/data-fetch.js"></script>
+  <script src="js/document.js"></script>
+</body>
+</html>
