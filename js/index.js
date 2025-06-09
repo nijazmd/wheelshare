@@ -97,27 +97,64 @@ if (currentUser) {
     return [...names].sort();
   }
 
-function populateCheckboxGroup(containerId, options, name) {
-  const container = document.getElementById(containerId);
-  options.forEach(val => {
-    const id = `${name}-${val.replace(/\s+/g, '')}`;
-    
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.name = name;
-    checkbox.value = val;
-    checkbox.id = id;
-    checkbox.classList.add('filterCheckbox');
-
-    const label = document.createElement('label');
-    label.setAttribute('for', id);
-    label.classList.add('filterBtn');
-    label.textContent = val;
-
-    container.appendChild(checkbox);
-    container.appendChild(label);
-  });
-}
+  function populateCheckboxGroup(containerId, options, name) {
+    const container = document.getElementById(containerId);
+  
+    // Derive actual field name
+    const fieldMap = {
+      filterMake: 'make',
+      filterCategory: 'category',
+      filterClass: 'class',
+      filterFuelType: 'fuelType',
+      filterDrivetrain: 'drivetrain',
+      filterGearbox: 'gearbox',
+      filterColor: 'colors',
+      filterOwner: 'owners',
+      filterRcOwner: 'rcOwner'
+    };
+    const field = fieldMap[name];
+  
+    // Build value counts
+    const valueCounts = {};
+    allVehicles.forEach(v => {
+      let values = [];
+  
+      if (field === 'owners' || field === 'colors') {
+        values = v[field]?.split(',').map(x => x.trim()) || [];
+      } else {
+        const val = v[field];
+        if (val) values = [val];
+      }
+  
+      values.forEach(val => {
+        if (!val) return;
+        valueCounts[val] = (valueCounts[val] || 0) + 1;
+      });
+    });
+  
+    // Render checkboxes and labels
+    options.forEach(val => {
+      const id = `${name}-${val.replace(/\s+/g, '')}`;
+  
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.name = name;
+      checkbox.value = val;
+      checkbox.id = id;
+      checkbox.classList.add('filterCheckbox');
+  
+      const label = document.createElement('label');
+      label.setAttribute('for', id);
+      label.classList.add('filterBtn');
+  
+      const count = valueCounts[val] || 0;
+      label.innerHTML = `${val} <span class="filterCount">(${count})</span>`;
+  
+      container.appendChild(checkbox);
+      container.appendChild(label);
+    });
+  }
+  
 
 
 function getCheckedValues(name) {

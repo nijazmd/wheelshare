@@ -106,12 +106,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     "Torque": vehicle.torque,
     "Gearbox": vehicle.gearbox,
     "Drivetrain": vehicle.drivetrain,
-    "Fuel Economy": vehicle.fuelEconomy,
+    "Best Fuel Economy": vehicle.fuelEconomy,
     "Boot Space": vehicle.bootSpace,
     "Colors": vehicle.colors,
     "Seating Capacity": vehicle.seatingCapacity,
+    "Model Year": vehicle.modelYear,
+    "Facelift": vehicle.faceliftYear,
     "Registration Year": vehicle.registrationYear,
-    "Model Year": vehicle.modelYear
+    "Owning Date": vehicle.owningDate
   };
     
   for (const [label, value] of Object.entries(specs)) {
@@ -125,14 +127,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let displayValue = value || '—';
 
-  // Append unit for Displacement
+  // Append units
   if (label === "Displacement" && value) {
     displayValue += " cc";
   }
 
-  // Append unit for Torque
   if (label === "Torque" && value) {
     displayValue += " Nm";
+  }
+
+  if (label === "Best Fuel Economy" && value) {
+    displayValue += "  kmpl";
+  }
+
+  if (label === "Boot Space" && value) {
+    displayValue += " l";
   }
 
   // Combine Number of Gears with Gearbox
@@ -219,12 +228,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     docRecords.forEach(doc => {
       const expiry = new Date(doc.expiryDate);
       const remainingDays = Math.ceil((expiry - today) / 86400000);
+      
+      const docType = doc.documentType?.toLowerCase();
+    
       if (remainingDays <= 0) {
         alerts.push({ text: `${doc.documentType} expired`, type: 'document', danger: true });
-      } else if (remainingDays <= 30) {
-        alerts.push({ text: `${doc.documentType} expiring in ${remainingDays} days`, type: 'document' });
+      } else {
+        // Use different thresholds
+        const threshold = docType === 'rc' || docType === 'registration' ? 90 : 30;
+        if (remainingDays <= threshold) {
+          alerts.push({ text: `${doc.documentType} expiring in ${remainingDays} days`, type: 'document' });
+        }
       }
     });
+    
 
     // Optionally sort alerts
     function priority(alert) {
@@ -309,6 +326,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     docRecords.forEach(doc => {
       const expiry = new Date(doc.expiryDate);
       const remainingDays = Math.ceil((expiry - today) / 86400000);
+      const formattedRemaining = formatRemainingTime(remainingDays);
       const li = document.createElement('li');
     
       // ✅ Apply warning or danger classes
@@ -328,11 +346,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
             <div class="row">
               <span class="issueLabel">Remaining: &nbsp;</span> 
-              <span class="remaining">(${remainingDays} days)</span>
+              <span class="remaining">(${formattedRemaining})</span>
             </div>
             <div class="row">
-              <span class="issueLabel">File: </span> 
-              <span> ${doc.fileLink ? `<a href="${doc.fileLink}" target="_blank">View</a><br>` : ''}</span>
+              <span class="issueLabel">File: &nbsp;</span> 
+                <span>
+                ${doc.fileLink
+                  ? `<a href="docs/${vehicleID}/${doc.fileLink}" target="_blank">Open Document</a>`
+                  : `Document not uploaded`}
+              </span>
             </div>
             <div class="row">
               <span class="issueLabel">Notes: &nbsp;</span> 
@@ -347,4 +369,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function fetchServiceIntervals() {
   return await fetchSheetData('ServiceIntervals');
+}
+
+function formatRemainingTime(days) {
+  const years = Math.floor(days / 365);
+  const months = Math.floor((days % 365) / 30);
+  const remaining = days - years * 365 - months * 30;
+
+  const parts = [];
+  if (years) parts.push(`${years} year${years > 1 ? 's' : ''}`);
+  if (months) parts.push(`${months} month${months > 1 ? 's' : ''}`);
+  if (remaining) parts.push(`${remaining} day${remaining > 1 ? 's' : ''}`);
+
+  return parts.length ? parts.join(', ') : 'Today';
 }

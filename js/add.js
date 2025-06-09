@@ -4,12 +4,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   const vehicleSelect = document.getElementById('vehicleSelect');
   const vehicles = await fetchVehicleData();
 
-  vehicles.forEach(v => {
+  vehicles
+  .sort((a, b) => {
+    const nameA = `${a.make} ${a.vehicleName}`.toLowerCase();
+    const nameB = `${b.make} ${b.vehicleName}`.toLowerCase();
+    return nameA.localeCompare(nameB);
+  })
+  .forEach(v => {
     const option = document.createElement('option');
     option.value = v.vehicleID;
     option.textContent = `${v.make} ${v.vehicleName}`;
     vehicleSelect.appendChild(option);
   });
+
 
   const formMaintenance = document.getElementById('maintenanceForm');
   const serviceItemsContainer = document.getElementById('serviceItemsContainer');

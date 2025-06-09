@@ -7,12 +7,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   dateInput.value = new Date().toISOString().split('T')[0];
 
   const vehicles = await fetchVehicleData();
-  vehicles.forEach(v => {
-    const opt = document.createElement('option');
-    opt.value = v.vehicleID;
-    opt.textContent = `${v.make} ${v.vehicleName}`;
-    vehicleSelect.appendChild(opt);
+  vehicles
+  .sort((a, b) => {
+    const nameA = `${a.make} ${a.vehicleName}`.toLowerCase();
+    const nameB = `${b.make} ${b.vehicleName}`.toLowerCase();
+    return nameA.localeCompare(nameB);
+  })
+  .forEach(v => {
+    const option = document.createElement('option');
+    option.value = v.vehicleID;
+    option.textContent = `${v.make} ${v.vehicleName}`;
+    vehicleSelect.appendChild(option);
   });
+
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();

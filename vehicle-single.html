@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>WheelShare - Vehicle Details</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -46,7 +46,10 @@
   
   <div id="maintTab" class="tabPanel">
 
-    <h2>Maintenance by Parts</h2>
+    <div class="titleRow">
+      <h2>Maintenance by Parts</h2>
+      <a href="add-maintenance.html" class="nakedBtn">Add Maintenance</a>
+    </div>
     <table id="maintenanceTable" class="maintenanceTable">
       <thead>
         <tr>
@@ -71,7 +74,10 @@
   </div>
 
   <div id="docsTab" class="tabPanel">
-    <h2>Documents</h2>
+    <div class="titleRow">
+      <h2>Documents</h2>
+      <a href="add-document.html" class="nakedBtn">Add Document</a>
+    </div>
     <ul id="documentList" class="issueList"></ul>
   </div>
 
