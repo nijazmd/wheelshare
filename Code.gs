@@ -13,10 +13,13 @@ function doPost(e) {
     return updateCurrentOdometer(params.vehicleID, params.odometer);
   } else if (type === 'issue') {
     return handleIssueReport(params);
+  } else if (type === 'fixIssue') {
+    return markIssueAsFixed(params.vehicleID, params.issue);
   }
 
   return ContentService.createTextOutput('Invalid submission type');
 }
+
 
 // ✅ Submit maintenance entry
 function handleMaintenanceSubmission(entry) {
@@ -113,3 +116,30 @@ function updateCurrentOdometer(vehicleID, odometer) {
 
   return ContentService.createTextOutput("Vehicle ID not found").setMimeType(ContentService.MimeType.TEXT);
 }
+
+function markIssueAsFixed(vehicleID, issueText) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('IssueReports');
+  const data = sheet.getDataRange().getValues();
+
+  const headers = data[0];
+  const idCol = headers.indexOf('vehicleID');
+  const issueCol = headers.indexOf('issue');
+  const fixedCol = headers.indexOf('isFixed');
+
+  if (idCol === -1 || issueCol === -1 || fixedCol === -1) {
+    return ContentService.createTextOutput('Required columns not found');
+  }
+
+  for (let i = 1; i < data.length; i++) {
+    if (
+      String(data[i][idCol]) === String(vehicleID) &&
+      String(data[i][issueCol]) === String(issueText)
+    ) {
+      sheet.getRange(i + 1, fixedCol + 1).setValue('TRUE');
+      return ContentService.createTextOutput('Issue marked as fixed');
+    }
+  }
+
+  return ContentService.createTextOutput('Issue not found');
+}
+

@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#111827" />
+  <link rel="icon" type="image/x-icon" href="images/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192.png" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <title>WheelShare - Vehicle Details</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -43,6 +50,14 @@
     <h2>Info</h2>
     <ul id="specList" class="cardGrid"></ul>
   </div>
+
+  <div id="docsTab" class="tabPanel">
+    <div class="titleRow">
+      <h2>Documents</h2>
+      <a href="add-document.html" class="nakedBtn">Add Document</a>
+    </div>
+    <ul id="documentList" class="issueList"></ul>
+  </div>
   
   <div id="maintTab" class="tabPanel">
 
@@ -71,14 +86,6 @@
       </thead>
       <tbody></tbody>
     </table>
-  </div>
-
-  <div id="docsTab" class="tabPanel">
-    <div class="titleRow">
-      <h2>Documents</h2>
-      <a href="add-document.html" class="nakedBtn">Add Document</a>
-    </div>
-    <ul id="documentList" class="issueList"></ul>
   </div>
 
   <!-- ✏️ Odometer Update Popup -->
