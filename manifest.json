@@ -1,11 +1,8 @@
 {
   "name": "WheelShare",
   "short_name": "WheelShare",
-  "start_url": "/index.html",
+  "start_url": "/your-repo-name/index.html",
   "display": "standalone",
-  "background_color": "#111827",
-  "theme_color": "#111827",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "images/icons/icon-192.png",
@@ -19,3 +16,4 @@
     }
   ]
 }
+
