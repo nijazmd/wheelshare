@@ -169,99 +169,98 @@ document.addEventListener('DOMContentLoaded', async () => {
     const alerts = [];
     const odo = parseInt(odometerValue || '0');
     const today = new Date();
-
+  
     if (intervals.length === 0) {
       const row = document.createElement('tr');
       row.innerHTML = `<td colspan="5">No service interval configured.</td>`;
       tableBody.appendChild(row);
       return;
     }
-
+  
     intervals.forEach(interval => {
-      const { component, intervalKM, intervalDays } = interval;
+      const { component, replaceKM, intervalDays } = interval;
       const history = vehicleMaint
         .filter(m => m.serviceType === component)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
       const last = history[0];
-
-      let lastDate = last?.date || '—';
-      let lastOdo = last?.odometer || '—';
-      let lastOdoParsed = last?.odometer ? parseInt(last.odometer) : null;
-      let dueKM = lastOdoParsed !== null && !isNaN(intervalKM)
-        ? lastOdoParsed + parseInt(intervalKM)
+  
+      const lastDate = last?.date || '—';
+      const lastOdo = last?.odometer || '—';
+      const lastOdoParsed = last?.odometer ? parseInt(last.odometer) : null;
+      const lastAction = last?.action?.toLowerCase() || '';
+      const isChecked = lastAction === 'checked';
+  
+      const dueKM = (!isChecked && lastOdoParsed !== null && replaceKM)
+        ? lastOdoParsed + parseInt(replaceKM)
         : '—';
-
-      let dueDate = last?.date
+  
+      const dueDate = last?.date
         ? new Date(new Date(last.date).getTime() + intervalDays * 86400000).toLocaleDateString()
         : '—';
-
+  
       const odoDiff = dueKM !== '—' ? parseInt(dueKM) - odo : null;
       const dueDateObj = last?.date ? new Date(last.date) : null;
-      const dateDiff = dueDateObj ? Math.ceil((new Date(dueDateObj.getTime() + intervalDays * 86400000) - today) / 86400000) : null;
-
-      if ((odoDiff !== null && odoDiff <= 0) || (dateDiff !== null && dateDiff <= 0)) {
+      const dateDiff = dueDateObj
+        ? Math.ceil((new Date(dueDateObj.getTime() + intervalDays * 86400000) - today) / 86400000)
+        : null;
+  
+      const isOverdue = (odoDiff !== null && odoDiff <= 0) || (dateDiff !== null && dateDiff <= 0);
+      const isUpcoming = (odoDiff !== null && odoDiff <= 1000) || (dateDiff !== null && dateDiff <= 30);
+  
+      if (isOverdue) {
         alerts.push({ text: `${component} Due`, type: 'maintenance', danger: true });
-      } else if ((odoDiff !== null && odoDiff <= 1000) || (dateDiff !== null && dateDiff <= 30)) {
+      } else if (isUpcoming) {
         alerts.push({ text: `${component} Due soon`, type: 'maintenance' });
       }
-      
-
-
+  
       const tr = document.createElement('tr');
-
-      if ((odoDiff !== null && odoDiff <= 0) || (dateDiff !== null && dateDiff <= 0)) {
-        tr.classList.add('danger');
-      } else if ((odoDiff !== null && odoDiff <= 1000) || (dateDiff !== null && dateDiff <= 30)) {
-        tr.classList.add('warning');
-      }
-
+      if (isOverdue) tr.classList.add('danger');
+      else if (isUpcoming) tr.classList.add('warning');
+  
       tr.innerHTML = `
         <td>${component}</td>
-        <td>${lastDate} <br> ${lastOdo}</td>
+        <td>${lastDate}<br>${lastOdo}</td>
         <td>${dueDate}<br>${dueKM}</td>
       `;
       tableBody.appendChild(tr);
     });
-
-// Combine document alerts with maintenance alerts
+  
+    // Document alerts
     const docRecords = documents.filter(d => d.vehicleID === vehicleID);
     docRecords.forEach(doc => {
       const expiry = new Date(doc.expiryDate);
       const remainingDays = Math.ceil((expiry - today) / 86400000);
-      
       const docType = doc.documentType?.toLowerCase();
-    
+  
       if (remainingDays <= 0) {
         alerts.push({ text: `${doc.documentType} expired`, type: 'document', danger: true });
       } else {
-        // Use different thresholds
         const threshold = docType === 'rc' || docType === 'registration' ? 90 : 30;
         if (remainingDays <= threshold) {
           alerts.push({ text: `${doc.documentType} expiring in ${remainingDays} days`, type: 'document' });
         }
       }
     });
-    
-
-    // Optionally sort alerts
-    function priority(alert) {
-      if (alert.danger) return 1;
-      if (alert.text.includes('Due')) return 2;
-      return 3;
-    }
-    alerts.sort((a, b) => priority(a) - priority(b));
-    
-
+  
+    // Sort alerts: danger > upcoming > others
+    alerts.sort((a, b) => {
+      if (a.danger && !b.danger) return -1;
+      if (!a.danger && b.danger) return 1;
+      return 0;
+    });
+  
     const alertBox = document.querySelector('.alertBox');
     const gallery = document.getElementById('imageGallery');
-
+  
     if (alerts.length) {
       const html = alerts.map(a => {
         const icon = a.type === 'document' ? 'doc.svg' : 'maintenance.svg';
         const dangerClass = a.danger ? 'danger' : '';
-        return `<div class="alertItem ${dangerClass}"><img src="images/icons/${icon}" alt="">&nbsp; ${a.text}</div>`;
+        return `<div class="alertItem ${dangerClass}" data-type="${a.type}">
+                  <img src="images/icons/${icon}" alt="">&nbsp; ${a.text}
+                </div>`;
       }).join('');
-
+  
       if (!alertBox) {
         const newAlert = document.createElement('div');
         newAlert.className = 'alertBox';
@@ -270,8 +269,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else {
         alertBox.innerHTML = html;
       }
+  
+      // Add click scroll behavior
+      document.querySelectorAll('.alertItem').forEach(item => {
+        item.addEventListener('click', () => {
+          const targetID = item.dataset.type === 'document' ? '#docsTab' : '#maintTab';
+          const target = document.querySelector(targetID);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(() => {
+              window.scrollBy(0, -0); // offset for fixed title bar
+            }, 500);
+          }
+        });
+      });      
     }
-  }
+  }  
 
   renderIssueReports();
   function renderIssueReports() {

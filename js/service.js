@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let dueItems = [];
 
     vehicleIntervals.forEach(interval => {
-      const { component, intervalKM, intervalDays } = interval;
+      const { component, replaceKM, intervalDays } = interval;
       const history = vehicleMaint
         .filter(m => m.serviceType === component)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const lastDate = last?.date || '—';
       const lastOdo = last?.odometer ? parseInt(last.odometer) : null;
 
-      const dueKM = lastOdo !== null ? lastOdo + parseInt(intervalKM) : null;
+      const dueKM = lastOdo !== null ? lastOdo + parseInt(replaceKM) : null;
       const dueDate = last?.date
         ? new Date(new Date(last.date).getTime() + intervalDays * 86400000)
         : null;

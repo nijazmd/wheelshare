@@ -80,7 +80,8 @@ if (currentUser) {
     el.addEventListener('change', () => {
       const filtered = applyFilters(allVehicles);
       const sorted = applySort(filtered);
-      renderVehiclesGrouped(filtered, groupBySelect.value);
+      renderVehiclesGrouped(sorted, groupBySelect.value);
+
     });
   });
 
@@ -295,10 +296,8 @@ for (const groupName of orderedKeys) {
           <div class="infoItem colTwo"><img src="images/icons/engine.svg" alt="">${v.displacement ? v.displacement + ' cc' : '–'}</div>
           <div class="infoItem colTwo"><img src="images/icons/power.svg" alt="">${v.power || '–'}</div>
           <div class="infoItem colTwo"><img src="images/icons/torque.svg" alt="">${v.torque ? v.torque + ' Nm' : '–'}</div>
+          <div class="infoItem colOne">${sortInfo}</div>
           </div>
-          ${sortInfo}
-
-          ${sortInfo}
         </div>
       `;
 
@@ -325,7 +324,7 @@ for (const groupName of orderedKeys) {
   function formatLabel(field) {
     return {
       modelYear: 'Model Year',
-      registrationNumber: 'Registration Year',
+      registrationYear: 'Registration Year',
       owningDate: 'Owning Date',
       displacement: 'Displacement',
       power: 'Power',
@@ -333,6 +332,8 @@ for (const groupName of orderedKeys) {
       fuelEconomy: 'Fuel Economy'
     }[field] || field;
   }
+
+  
   function getMaintenanceStatus(vehicle, intervals, maintenance) {
   const vehicleID = vehicle.vehicleID;
   const currentOdo = parseInt(vehicle.CurrentOdometer || '0');
@@ -344,7 +345,7 @@ for (const groupName of orderedKeys) {
   let status = 'normal';
 
   for (const interval of vehicleIntervals) {
-    const { component, intervalKM, intervalDays } = interval;
+    const { component, replaceKM, intervalDays } = interval;
     const records = vehicleMaintenance
       .filter(m => m.serviceType === component)
       .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -354,7 +355,7 @@ for (const groupName of orderedKeys) {
 
     const lastOdo = parseInt(last.odometer || '0');
     const lastDate = new Date(last.date);
-    const nextOdo = lastOdo + parseInt(intervalKM || '0');
+    const nextOdo = lastOdo + parseInt(replaceKM || '0');
     const nextDate = new Date(lastDate.getTime() + parseInt(intervalDays || '0') * 86400000);
 
     const odoDiff = nextOdo - currentOdo;
@@ -367,3 +368,11 @@ for (const groupName of orderedKeys) {
   return status;
 }
 });
+
+// Register the service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(() => console.log('✅ Service Worker registered'))
+    .catch(err => console.error('Service Worker failed:', err));
+}
+
