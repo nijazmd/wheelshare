@@ -380,6 +380,9 @@ textarea {
   flex-direction: row;
   padding-top: var(--small);
 }
+.infoItem.colOne {
+  width: 100%;
+}
 .infoItem img {
   width: 13px;
   height: 12px;
