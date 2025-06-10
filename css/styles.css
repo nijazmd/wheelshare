@@ -187,8 +187,7 @@ tr.warning {
   display: flex;
   flex-direction: row;
   width: 100%;
-  width: calc(100%-40px);
-  padding: 0 var(--medium);
+  padding: 0 var(--medium) var(--small);
   background: var(--proto-sub);
   border-radius: var(--large) var(--large) 0 0;
   color: var(--dark-blue);

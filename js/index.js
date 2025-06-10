@@ -1,8 +1,20 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const urlUser = getQueryParam('user');
-  if (urlUser) {
-    sessionStorage.setItem('currentUser', urlUser);
+const urlUser = getQueryParam('user');
+if (urlUser) {
+  localStorage.setItem('currentUser', urlUser); // save for future launches
+}
+
+let currentUser = localStorage.getItem('currentUser');
+
+// If not found, prompt once
+if (!currentUser) {
+  const input = prompt("Welcome! Please enter your name:");
+  if (input) {
+    currentUser = input.trim();
+    localStorage.setItem('currentUser', currentUser);
   }
+}
+
 
   const vehicleList = document.getElementById('vehicleList');
   const [allVehicles, serviceIntervals, maintenanceData, documents] = await Promise.all([
@@ -37,7 +49,7 @@ toggleBtn.addEventListener('click', () => {
   populateCheckboxGroup('filterOwnerGroup', getUniqueNamesFromField(allVehicles, 'owners'), 'filterOwner');
   populateCheckboxGroup('filterRcOwnerGroup', getUniqueValues(allVehicles, 'rcOwner'), 'filterRcOwner');
 
-  const currentUser = sessionStorage.getItem('currentUser');
+
 
 if (currentUser) {
   const greetingContainer = document.getElementById('userGreetingArea');

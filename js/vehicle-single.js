@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (target) {
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             setTimeout(() => {
-              window.scrollBy(0, -0); // offset for fixed title bar
+              window.scrollBy(0, -70); // offset for fixed title bar
             }, 500);
           }
         });
