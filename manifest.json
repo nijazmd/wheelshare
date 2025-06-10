@@ -1,7 +1,7 @@
 {
   "name": "WheelShare",
   "short_name": "WheelShare",
-  "start_url": "/your-repo-name/index.html",
+  "start_url": "/wheelshare/index.html",
   "display": "standalone",
   "icons": [
     {
