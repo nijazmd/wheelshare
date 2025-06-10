@@ -648,58 +648,11 @@ textarea {
   color: #fff;
 }
 
-.userSelectPopup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(10, 10, 10, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.popupContent {
-  background: #1c1c1c;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 90%;
-  color: #fff;
-  text-align: center;
-}
-
-.userSelect {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 20px;
-}
-
-.userContainer {
-  cursor: pointer;
-  width: 100px;
-  text-align: center;
-}
-
-.userContainer .profilePic img {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #888;
-}
-
-.userGreeting span {
-  font-size: 14px;
-  display: block;
-  margin-top: 6px;
-}
-
-
 .loader.hidden {
+  display: none;
+}
+
+.userSelectPopup {
   display: none;
 }
 
