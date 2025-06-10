@@ -1,19 +1,16 @@
 document.addEventListener('DOMContentLoaded', async () => {
-const urlUser = getQueryParam('user');
-if (urlUser) {
-  localStorage.setItem('currentUser', urlUser); // save for future launches
-}
-
-let currentUser = localStorage.getItem('currentUser');
-
-// If not found, prompt once
-if (!currentUser) {
-  const input = prompt("Welcome! Please enter your name:");
-  if (input) {
-    currentUser = input.trim();
-    localStorage.setItem('currentUser', currentUser);
+  const urlUser = getQueryParam('user');
+  if (urlUser) {
+    localStorage.setItem('currentUser', urlUser);
   }
-}
+  
+  let currentUser = localStorage.getItem('currentUser');
+  
+  if (!currentUser) {
+    showUserSelectPopup();
+    return; // Stop here until user selects
+  }
+  
 
 
   const vehicleList = document.getElementById('vehicleList');
@@ -254,7 +251,7 @@ function applyFilters(data) {
   const grouped = {};
 
   if (groupBy === 'owners') {
-    const user = sessionStorage.getItem('currentUser');
+    const user = localStorage.getItem('currentUser');
     vehicles.forEach(v => {
       const ownerList = v.owners?.split(',').map(o => o.trim()) || [];
       const isMine = user && ownerList.some(o => o.trim().toLowerCase() === user.toLowerCase());
@@ -378,8 +375,40 @@ for (const groupName of orderedKeys) {
   }
 
   return status;
+  
 }
 });
+
+function showUserSelectPopup() {
+  const users = [
+    'Nijas', 'Nisar', 'Mujeeb', 'Jahamgeer', 'Adnan', 'Hidash', 'Shaad', 'Ishan'
+  ]; // Update this array based on your actual usernames
+
+  const container = document.getElementById('userSelectList');
+  const popup = document.getElementById('userSelectPopup');
+
+  container.innerHTML = ''; // Clear existing, if any
+
+  users.forEach(user => {
+    const userDiv = document.createElement('div');
+    userDiv.classList.add('userContainer');
+    userDiv.innerHTML = `
+      <div class="profilePic">
+        <img src="images/users/${user}.jpg" alt="${user}" onerror="this.onerror=null;this.src='images/users/user.jpg';">
+      </div>
+      <div class="userGreeting"><span>${user}</span></div>
+    `;
+    userDiv.addEventListener('click', () => {
+      localStorage.setItem('currentUser', user);
+      popup.style.display = 'none';
+      location.reload(); // Force full reload to use currentUser logic
+    });
+
+    container.appendChild(userDiv);
+  });
+
+  popup.style.display = 'flex';
+}
 
 // Register the service worker
 if ('serviceWorker' in navigator) {
