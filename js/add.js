@@ -44,6 +44,18 @@ if (vehicleSelect.value) {
   const addServiceItemBtn = document.getElementById('addServiceItemBtn');
 
   function addServiceItemRow() {
+    function attachFocusWorkaround(row) {
+      const inputs = row.querySelectorAll('input, textarea, select');
+      inputs.forEach(input => {
+        input.addEventListener('touchend', () => {
+          setTimeout(() => {
+            input.focus();
+            input.click(); // Helps trigger the keyboard on iOS PWA
+          }, 100);
+        });
+      });
+    }
+    
     const row = document.createElement('div');
     row.className = 'serviceItemRow';
     row.innerHTML = `
@@ -64,6 +76,7 @@ if (vehicleSelect.value) {
       <input type="text" class="notes" />
     `;
     serviceItemsContainer.appendChild(row);
+    attachFocusWorkaround(row);
     row.querySelector('.cost').addEventListener('input', updateTotalCost);
   }
 
