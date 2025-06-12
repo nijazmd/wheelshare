@@ -472,6 +472,18 @@ textarea {
   font-size: 1.4rem;
   color: var(--secondary);
 }
+.twoButtonRow {
+  width: 100%;
+  justify-content: space-between;
+}
+.twoButtonRow button {
+  width: 48%;
+}
+.cost-warning {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+
 
 
 .cardGrid {

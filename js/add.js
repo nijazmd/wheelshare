@@ -66,11 +66,49 @@ if (vehicleSelect.value) {
       </label>
     `;
     serviceItemsContainer.appendChild(row);
+    row.querySelector('.cost').addEventListener('input', updateTotalCost);
+  }
+
+  function updateTotalCost() {
+    const costInputs = document.querySelectorAll('.serviceItemRow .cost');
+    const otherCost = parseFloat(document.getElementById('otherCost').value) || 0;
+  
+    let sum = 0;
+    costInputs.forEach(input => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val)) sum += val;
+    });
+  
+    const total = sum + otherCost;
+    document.getElementById('totalServiceCost').value = total;
+  }
+  
+  function updateTotalCost() {
+    const costInputs = document.querySelectorAll('.serviceItemRow .cost');
+    const otherCost = parseFloat(document.getElementById('otherCost').value) || 0;
+    const labourCost = parseFloat(document.getElementById('labourCharges').value) || 0;
+  
+    let sum = 0;
+    costInputs.forEach(input => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val)) sum += val;
+    });
+  
+    const total = sum + otherCost + labourCost;
+    document.getElementById('totalServiceCost').value = total;
   }
   
 
   addServiceItemBtn.addEventListener('click', addServiceItemRow);
   addServiceItemRow(); // initial row
+
+  document.getElementById('otherCost').addEventListener('input', updateTotalCost);
+  document.getElementById('labourCharges').addEventListener('input', updateTotalCost);
+document.getElementById('totalServiceCost').addEventListener('input', adjustOtherCostFromTotal);
+document.getElementById('totalServiceCost').addEventListener('blur', adjustOtherCostFromTotal);
+
+
+
 
   formMaintenance.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -175,4 +213,8 @@ unique.forEach(component => {
   opt.value = component;
   datalist.appendChild(opt);
 });
+
+document.getElementById('otherCost').value = 0;
+document.getElementById('totalServiceCost').value = 0;
+
 }
