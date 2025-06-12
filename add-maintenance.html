@@ -33,23 +33,19 @@
   <h1>Add Maintenance</h1>
 
   <!-- Vehicle Selector -->
-  <div class="formGroup">
-    <label for="vehicleSelect">Select Vehicle:</label>
-    <select id="vehicleSelect"></select>
-  </div>
-
+  
   <!-- Maintenance Form -->
   <form id="maintenanceForm" class="formGroup">
-    <label for="maintDate">Date:
-    </label>
+    <label for="vehicleSelect">Select Vehicle:</label>
+    <select id="vehicleSelect"></select>
+    
+    <label for="maintDate">Date:</label>
     <input type="date" id="maintDate" name="maintDate" required />
 
-    <label for="maintOdometer">Odometer:
-    </label>
+    <label for="maintOdometer">Odometer:</label>
     <input type="number" id="maintOdometer" name="maintOdometer" required />
 
-    <label for="workshopName">Workshop:
-    </label>
+    <label for="workshopName">Workshop:</label>
     <input type="text" id="workshopName" name="workshopName" />
 
     <div id="serviceItemsContainer"></div>
@@ -58,19 +54,16 @@
       <button class="actionBtn small" type="button" id="addServiceItemBtn">Add Another Service Component</button>
     </div>
 
-    <label>Labour Charges:
-    </label>  
+    <label>Labour Charges:</label>  
     <input type="number" id="labourCharges" name="labourCharges"/>
 
     <datalist id="serviceSuggestions">
     </datalist>
     
     <div class="formGroup totalCostContainer">
-      <label>Other Items Cost:
-      </label>
+      <label>Other Items Cost:</label>
       <input type="number" id="otherCost" value="0" name="otherCost" />
-      <label>Total Service Cost:
-      </label>
+      <label>Total Service Cost:</label>
       <input type="number" id="totalServiceCost" value="0" name="totalServiceCost" />
     </div>
 

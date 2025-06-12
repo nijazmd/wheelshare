@@ -275,7 +275,7 @@ tr.warning {
   display: none;
 }
 .filterGroup input[type="checkbox"]+label {
-  display: flex;
+  display: block;
   width: fit-content;
   padding: var(--small);
   margin: 0 var(--small) var(--small) 0 ;
@@ -726,4 +726,13 @@ textarea {
   to {
     transform: rotate(360deg);
   }
+}
+
+body, html {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+form, .formGroup {
+  min-height: 100%;
 }

@@ -32,12 +32,10 @@
 
   <h1>Add Document</h1>
 
-  <div class="formGroup">
+  
+  <form id="documentForm" class="docForm formGroup">
     <label for="vehicleSelect">Select Vehicle:</label>
     <select id="vehicleSelect"></select>
-  </div>
-
-  <form id="documentForm" class="docForm formGroup">
     <label for="docType">Document Type:
       <select id="docType" required>
         <option value="">-- Select Type --</option>
@@ -48,17 +46,14 @@
       </select>
     </label>
 
-    <label for="docIssueDate">Issue Date:
-    </label>
-    <input type="date" id="docIssueDate" required />
+    <label for="docIssueDate">Issue Date:</label>
+    <input type="date" id="docIssueDate" name="docIssueDate" required />
 
-    <label for="docExpiryDate">Expiry Date:
-    </label>
-    <input type="date" id="docExpiryDate" required />
+    <label for="docExpiryDate">Expiry Date:</label>
+    <input type="date" id="docExpiryDate" name="docExpiryDate" required />
 
-    <label for="docNotes">Agency Name, Phone Number & Notes:
-    </label>
-    <textarea id="docNotes"></textarea>
+    <label for="docNotes">Agency Name, Phone Number & Notes:</label>
+    <textarea id="docNotes" name="docNotes"></textarea>
 
     <div class="buttonRow">
       <button class="actionBtn" type="submit">Submit Document</button>
