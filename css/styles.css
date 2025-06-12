@@ -703,6 +703,9 @@ textarea {
 .userSelect {
   flex-direction: column;
 }
+.userSelect .userContainer {
+  padding-bottom: var(--medium);
+}
 
 .version {
   font-size: 1rem;
