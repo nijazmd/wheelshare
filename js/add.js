@@ -17,6 +17,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     vehicleSelect.appendChild(option);
   });
 
+  const serviceIntervals = await fetchServiceIntervals();
+
+// When vehicle is selected, update the serviceSuggestions datalist
+vehicleSelect.addEventListener('change', () => {
+  const selectedID = vehicleSelect.value;
+  const vehicleComponents = serviceIntervals
+    .filter(item => item.vehicleID === selectedID)
+    .map(item => item.component);
+
+  populateServiceSuggestions(vehicleComponents);
+});
+
+// Trigger once on page load if vehicle is preselected
+if (vehicleSelect.value) {
+  const vehicleComponents = serviceIntervals
+    .filter(item => item.vehicleID === vehicleSelect.value)
+    .map(item => item.component);
+
+  populateServiceSuggestions(vehicleComponents);
+}
+
 
   const formMaintenance = document.getElementById('maintenanceForm');
   const serviceItemsContainer = document.getElementById('serviceItemsContainer');
@@ -137,7 +158,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     formMaintenance.reset();
     serviceItemsContainer.innerHTML = '';
     addServiceItemRow(); // add a fresh row
-  });
+  }); 
   
-
 });
+async function fetchServiceIntervals() {
+return await fetchSheetData('ServiceIntervals');
+}
+
+function populateServiceSuggestions(components) {
+const datalist = document.getElementById('serviceSuggestions');
+datalist.innerHTML = ''; // Clear existing options
+
+const unique = [...new Set(components.filter(Boolean))].sort();
+unique.forEach(component => {
+  const opt = document.createElement('option');
+  opt.value = component;
+  datalist.appendChild(opt);
+});
+}
