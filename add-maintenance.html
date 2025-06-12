@@ -41,15 +41,15 @@
   <!-- Maintenance Form -->
   <form id="maintenanceForm" class="formGroup">
     <label for="maintDate">Date:
-      <input type="date" id="maintDate" required />
+      <input type="date" id="maintDate" name="maintDate" required />
     </label>
 
     <label for="maintOdometer">Odometer:
-      <input type="number" id="maintOdometer" required />
+      <input type="number" id="maintOdometer" name="maintOdometer" required />
     </label>
 
     <label for="workshopName">Workshop:
-      <input type="text" id="workshopName" />
+      <input type="text" id="workshopName" name="workshopName" />
     </label>
 
     <div id="serviceItemsContainer"></div>
@@ -59,7 +59,7 @@
     </div>
 
     <label>Labour Charges:
-      <input type="number" id="labourCharges" />
+      <input type="number" id="labourCharges" name="labourCharges"/>
     </label>  
 
     <datalist id="serviceSuggestions">
@@ -67,10 +67,10 @@
     
     <div class="formGroup totalCostContainer">
       <label>Other Items Cost:
-        <input type="number" id="otherCost" value="0" />
+        <input type="number" id="otherCost" value="0" name="otherCost" />
       </label>
       <label>Total Service Cost:
-        <input type="number" id="totalServiceCost" value="0" />
+        <input type="number" id="totalServiceCost" value="0" name="totalServiceCost" />
       </label>
     </div>
 
