@@ -653,7 +653,7 @@ textarea {
 }
 
 /* action type radio group */
-.actionGroup input[type="radio"]{
+/* .actionGroup input[type="radio"]{
   display: none;
 }
 .actionGroup label{
@@ -674,7 +674,7 @@ textarea {
 /* ADD DOCS */
 .docForm label {
   margin-bottom: var(--large);
-}
+} */
 
 /* LOADER */
 .loader {
