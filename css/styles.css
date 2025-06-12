@@ -468,9 +468,10 @@ textarea {
   background-color: var(--proto-sub);
   border-radius: var(--radius);
 }
-.actionBtn[type="submit"]{
-  background-color: var(--proto-main);
+.actionBtn.small {
+  padding: var(--small);
 }
+
 .nakedBtn {
   font-size: 1.4rem;
   color: var(--secondary);
@@ -486,7 +487,9 @@ textarea {
   border: 2px solid red;
   background-color: #ffe6e6;
 }
-
+.serviceItemBtn button {
+  margin-top: 0!important;
+}
 
 
 .cardGrid {
