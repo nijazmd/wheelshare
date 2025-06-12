@@ -652,7 +652,7 @@ textarea {
 }
 
 /* action type radio group */
-/* .actionGroup input[type="radio"]{
+.actionGroup input[type="radio"]{
   display: none;
 }
 .actionGroup label{
@@ -665,7 +665,7 @@ textarea {
 .actionGroup input[type="radio"]:checked+label{
   color: var(--proto-light);
   border-color: var(--proto-light);
-} */
+}
 #labourCharges {
   margin-bottom: var(--large);
 }
