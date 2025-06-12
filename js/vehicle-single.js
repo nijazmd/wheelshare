@@ -190,9 +190,29 @@ document.addEventListener('DOMContentLoaded', async () => {
       const lastAction = last?.action?.toLowerCase() || '';
       const isChecked = lastAction === 'checked';
   
-      const dueKM = (!isChecked && lastOdoParsed !== null && replaceKM)
-        ? lastOdoParsed + parseInt(replaceKM)
-        : '—';
+      const replaceDueKM = (lastOdoParsed !== null && replaceKM) ? lastOdoParsed + parseInt(replaceKM) : null;
+      const inspectDueKM = (lastOdoParsed !== null && interval.inspectionKM) ? lastOdoParsed + parseInt(interval.inspectionKM) : null;
+      
+      let dueKM = '—';
+      let serviceType = '';
+      if (replaceDueKM !== null && inspectDueKM !== null) {
+        if (replaceDueKM <= inspectDueKM) {
+          dueKM = replaceDueKM;
+          serviceType = 'Replace';
+        } else {
+          dueKM = inspectDueKM;
+          serviceType = 'Check';
+        }
+      } else if (replaceDueKM !== null) {
+        dueKM = replaceDueKM;
+        serviceType = 'Replace';
+      } else if (inspectDueKM !== null) {
+        dueKM = inspectDueKM;
+        serviceType = 'Check';
+      } else {
+        serviceType = '—';
+      }
+      
   
       const dueDate = last?.date
         ? new Date(new Date(last.date).getTime() + intervalDays * 86400000).toLocaleDateString()
@@ -221,17 +241,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         <td>${component}</td>
         <td>${lastDate}<br>${lastOdo}</td>
         <td>${dueDate}<br>${dueKM}</td>
+        <td>${serviceType}</td>
       `;
       tableBody.appendChild(tr);
     });
   
-    // Document alerts
-    const docRecords = documents.filter(d => d.vehicleID === vehicleID);
+    // Document alerts – only latest per type
+    const allDocs = documents.filter(d => d.vehicleID === vehicleID);
+    const latestDocsMap = {};
+    allDocs.forEach(doc => {
+      const type = doc.documentType;
+      const expiryDate = new Date(doc.expiryDate);
+      if (!latestDocsMap[type] || expiryDate > new Date(latestDocsMap[type].expiryDate)) {
+        latestDocsMap[type] = doc;
+      }
+    });
+    const docRecords = Object.values(latestDocsMap);
+
     docRecords.forEach(doc => {
       const expiry = new Date(doc.expiryDate);
       const remainingDays = Math.ceil((expiry - today) / 86400000);
       const docType = doc.documentType?.toLowerCase();
-  
+
       if (remainingDays <= 0) {
         alerts.push({ text: `${doc.documentType} expired`, type: 'document', danger: true });
       } else {
@@ -241,6 +272,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
     });
+
   
     // Sort alerts: danger > upcoming > others
     alerts.sort((a, b) => {
@@ -331,7 +363,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Documents
   const documentList = document.getElementById('documentList');
-  const docRecords = documents.filter(d => d.vehicleID === vehicleID);
+  const rawDocs = documents.filter(d => d.vehicleID === vehicleID);
+
+  // ✅ Keep only the latest document per documentType
+  const latestDocsMap = {};
+  rawDocs.forEach(doc => {
+    const type = doc.documentType;
+    const expiryDate = new Date(doc.expiryDate);
+    if (!latestDocsMap[type] || expiryDate > new Date(latestDocsMap[type].expiryDate)) {
+      latestDocsMap[type] = doc;
+    }
+  });
+  
+  const docRecords = Object.values(latestDocsMap);
+  
   if (docRecords.length === 0) {
     documentList.innerHTML = '<li>No documents found.</li>';
   } else {
@@ -341,14 +386,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       const remainingDays = Math.ceil((expiry - today) / 86400000);
       const formattedRemaining = formatRemainingTime(remainingDays);
       const li = document.createElement('li');
-    
-      // ✅ Apply warning or danger classes
+  
       if (remainingDays <= 0) {
         li.classList.add('danger');
       } else if (remainingDays <= 30) {
         li.classList.add('warning');
       }
-    
+  
       li.innerHTML = `
         <div class="docLabel">${doc.documentType}</div>
         <div class="docExpiry">
@@ -376,8 +420,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </div>`;
       documentList.appendChild(li);
-    });    
-  }
+    });
+  }  
 });
 
 async function fetchServiceIntervals() {

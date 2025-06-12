@@ -310,9 +310,23 @@ for (const groupName of orderedKeys) {
         </div>
       `;
 
-      const hasOverdueDoc = documents.some(doc => {
-        return doc.vehicleID === v.vehicleID && new Date(doc.expiryDate) < new Date();
+      const today = new Date();
+      const latestDocs = {}; // { vehicleID_documentType: { expiryDate: Date, ...doc } }
+      
+      documents.forEach(doc => {
+        const key = `${doc.vehicleID}_${doc.documentType}`;
+        const current = latestDocs[key];
+        const expiry = new Date(doc.expiryDate);
+      
+        if (!current || new Date(current.expiryDate) < expiry) {
+          latestDocs[key] = doc;
+        }
       });
+      
+      const hasOverdueDoc = Object.values(latestDocs).some(doc => {
+        return doc.vehicleID === v.vehicleID && new Date(doc.expiryDate) < today;
+      });
+      
 
       if (hasOverdueDoc) {
         const docIcon = document.createElement('span');
@@ -374,6 +388,13 @@ for (const groupName of orderedKeys) {
     if (odoDiff <= 1001 || dateDiff <= 30) status = 'upcoming';
   }
 
+  const greetingContainer = document.getElementById('userGreetingArea');
+  if (greetingContainer) {
+    greetingContainer.style.cursor = 'pointer';
+    greetingContainer.addEventListener('click', showUserSelectPopup);
+  }
+
+
   return status;
   
 }
@@ -381,7 +402,7 @@ for (const groupName of orderedKeys) {
 
 function showUserSelectPopup() {
   const users = [
-    'Nijas', 'Nisar', 'Mujeeb', 'Jahamgeer', 'Adnan', 'Hidash', 'Shaad', 'Ishan'
+    'Adnan', 'Hidash', 'Ishan', 'Jahamgeer', 'Mujeeb', 'Nijas', 'Nisar', 'Shaad', 'Others'
   ]; // Update this array based on your actual usernames
 
   const container = document.getElementById('userSelectList');

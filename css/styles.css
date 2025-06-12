@@ -34,7 +34,7 @@ body {
   font-family: 'Inter', 'Open Sans', sans-serif;
   font-size: 1.6rem;
   color: var(--white);
-  margin: 0;
+  margin: 0 0 var(--large) 0;
   padding: var(--large);
   padding-bottom: 52px;
   background-color: var(--dark-blue);
@@ -309,6 +309,9 @@ tr.warning {
 input, input[type="date"], select, textarea {
   width: 100%;
   height: 40px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
   padding: 0 15px;
   border-radius: var(--radius);
   outline: none;
@@ -654,6 +657,10 @@ textarea {
 
 .userSelectPopup {
   display: none;
+}
+
+.userSelect {
+  flex-direction: column;
 }
 
 .version {
