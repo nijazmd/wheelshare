@@ -468,6 +468,9 @@ textarea {
   background-color: var(--proto-sub);
   border-radius: var(--radius);
 }
+.actionBtn[type="submit"]{
+  background-color: var(--proto-main);
+}
 .nakedBtn {
   font-size: 1.4rem;
   color: var(--secondary);
@@ -628,9 +631,13 @@ textarea {
 .formGroup, #serviceItemsContainer, .serviceItemRow {
   flex-direction: column;
 }
+#serviceItemsContainer {
+  margin-bottom: 20px;
+}
 .serviceItemRow {
   width: 100%;
-  margin: var(--large) auto;
+  padding: var(--large) 0;
+  border-bottom: 1px solid var(--dark-gray);
 }
 #maintenanceForm {
   margin-bottom: var(--large);
@@ -639,6 +646,25 @@ textarea {
 .formBtns button {
   margin: var(--large) var(--small) var(--large) 0;
   color: var(--white);
+}
+
+/* action type radio group */
+.actionGroup input[type="radio"]{
+  display: none;
+}
+.actionGroup label{
+  padding: var(--small) var(--large);
+  margin-right: var(--small);
+  font-size: 1.4rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--dark-gray);
+}
+.actionGroup input[type="radio"]:checked+label{
+  color: var(--proto-light);
+  border-color: var(--proto-light);
+}
+#labourCharges {
+  margin-bottom: var(--large);
 }
 
 /* ADD DOCS */

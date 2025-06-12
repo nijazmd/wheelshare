@@ -50,14 +50,15 @@ if (vehicleSelect.value) {
       <label>Service Item:
         <input list="serviceSuggestions" class="serviceType" required />
       </label>
-      <label>Action:
-        <select class="action" required>
-          <option value="">-- Select Action --</option>
-          <option value="Replaced">Replaced</option>
-          <option value="Checked">Checked</option>
-          <option value="Cleaned">Cleaned</option>
-        </select>
-      </label>
+      <label>Action:</label>
+      <div class="actionGroup">
+      <input id="replaced" type="radio" name="action_${Date.now()}" value="Replaced" required />
+      <label for="replaced">Replaced</label>
+      <input id="checked" type="radio" name="action_${Date.now()}" value="Checked" />
+      <label for="checked">Checked</label>
+      <input id="cleaned" type="radio" name="action_${Date.now()}" value="Cleaned" />
+      <label for="cleaned">Cleaned</label>
+      </div>    
       <label>Cost:
         <input type="number" class="cost" />
       </label>
@@ -98,7 +99,6 @@ if (vehicleSelect.value) {
     document.getElementById('totalServiceCost').value = total;
   }
   
-
   addServiceItemBtn.addEventListener('click', addServiceItemRow);
   addServiceItemRow(); // initial row
 
@@ -131,7 +131,7 @@ document.getElementById('totalServiceCost').addEventListener('blur', adjustOther
   
     for (const row of rows) {
       const serviceType = row.querySelector('.serviceType')?.value || "";
-      const action = row.querySelector('.action')?.value || "";
+      const action = row.querySelector('input[name^="action_"]:checked')?.value || "";
       const cost = row.querySelector('.cost')?.value || "";
       const notes = row.querySelector('.notes')?.value || "";
   
