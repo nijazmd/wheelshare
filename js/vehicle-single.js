@@ -177,6 +177,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
   
+    intervals.sort((a, b) => {
+      const getUrgencyScore = (interval) => {
+        const history = vehicleMaint
+          .filter(m => m.serviceType === interval.component)
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+        const last = history[0];
+        const odoDiff = last?.odometer ? parseInt(last.odometer) + parseInt(interval.replaceKM || 0) - parseInt(odometerValue) : Infinity;
+        const dateDiff = last?.date ? new Date(new Date(last.date).getTime() + interval.intervalDays * 86400000) - new Date() : Infinity;
+        return Math.min(odoDiff, dateDiff); // Smaller = more urgent
+      };
+      return getUrgencyScore(a) - getUrgencyScore(b);
+    });
+    
     intervals.forEach(interval => {
       const { component, replaceKM, intervalDays } = interval;
       const history = vehicleMaint
@@ -240,8 +253,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       tr.innerHTML = `
         <td>${component}</td>
         <td>${lastDate}<br>${lastOdo}</td>
-        <td>${dueDate}<br>${dueKM}</td>
-        <td>${serviceType}</td>
+        <td>${dueDate}<br>${dueKM}<br>${serviceType}</td>
       `;
       tableBody.appendChild(tr);
     });
