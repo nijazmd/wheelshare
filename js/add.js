@@ -44,6 +44,7 @@ if (vehicleSelect.value) {
   const addServiceItemBtn = document.getElementById('addServiceItemBtn');
 
   function addServiceItemRow() {
+    const uniqueID = Date.now(); // generate once
     const row = document.createElement('div');
     row.className = 'serviceItemRow';
     row.innerHTML = `
@@ -52,12 +53,12 @@ if (vehicleSelect.value) {
       </label>
       <label>Action:</label>
       <div class="actionGroup">
-      <input id="replaced" type="radio" name="action_${Date.now()}" value="Replaced" required />
-      <label for="replaced">Replaced</label>
-      <input id="checked" type="radio" name="action_${Date.now()}" value="Checked" />
-      <label for="checked">Checked</label>
-      <input id="cleaned" type="radio" name="action_${Date.now()}" value="Cleaned" />
-      <label for="cleaned">Cleaned</label>
+        <input id="replaced_${uniqueID}" type="radio" name="action_${uniqueID}" value="Replaced" required />
+        <label for="replaced_${uniqueID}">Replaced</label>
+        <input id="checked_${uniqueID}" type="radio" name="action_${uniqueID}" value="Checked" />
+        <label for="checked_${uniqueID}">Checked</label>
+        <input id="cleaned_${uniqueID}" type="radio" name="action_${uniqueID}" value="Cleaned" />
+        <label for="cleaned_${uniqueID}">Cleaned</label>
       </div>    
       <label>Cost:
         <input type="number" class="cost" />
@@ -69,6 +70,7 @@ if (vehicleSelect.value) {
     serviceItemsContainer.appendChild(row);
     row.querySelector('.cost').addEventListener('input', updateTotalCost);
   }
+  
 
   function updateTotalCost() {
     const costInputs = document.querySelectorAll('.serviceItemRow .cost');
