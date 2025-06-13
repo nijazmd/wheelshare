@@ -47,6 +47,10 @@ input, select, textarea {
   outline: none;
   box-shadow: none;
 }
+input.error {
+  border: 2px solid red;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -69,6 +73,7 @@ button {
   height: 100vh;
   background: linear-gradient(147deg,rgba(104, 64, 223, 1) 0%, rgba(24, 29, 61, 1) 39%, rgba(24, 29, 61, 1) 100%);
 }
+
 
 /* COMMONS */
 .row {
