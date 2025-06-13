@@ -154,7 +154,7 @@ tr.warning {
   background-color: var(--warning);
 }
 .dateColumn {
-  min-width: 80px;
+  min-width: 96px;
 }
 
 .popup.hidden {
