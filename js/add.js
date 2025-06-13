@@ -100,6 +100,34 @@ if (vehicleSelect.value) {
     const total = sum + otherCost + labourCost;
     document.getElementById('totalServiceCost').value = total;
   }
+
+  function adjustOtherCostFromTotal() {
+    const totalInput = document.getElementById('totalServiceCost');
+    const otherInput = document.getElementById('otherCost');
+    const labour = parseFloat(document.getElementById('labourCharges').value) || 0;
+    const costInputs = document.querySelectorAll('.serviceItemRow .cost');
+  
+    let sum = labour;
+    costInputs.forEach(input => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val)) sum += val;
+    });
+  
+    const totalEntered = parseFloat(totalInput.value);
+    const calculatedOther = totalEntered - sum;
+  
+    if (!isNaN(calculatedOther)) {
+      otherInput.value = calculatedOther;
+  
+      // Highlight if Other is negative
+      if (calculatedOther < 0) {
+        totalInput.classList.add('error');
+      } else {
+        totalInput.classList.remove('error');
+      }
+    }
+  }
+  
   
   addServiceItemBtn.addEventListener('click', addServiceItemRow);
   addServiceItemRow(); // initial row
