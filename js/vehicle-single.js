@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         .sort((a, b) => new Date(b.date) - new Date(a.date));
       const last = history[0];
   
-      const lastDate = last?.date || '—';
+      const lastDate = formatDate(last?.date);
       const lastOdo = last?.odometer || '—';
       const lastOdoParsed = last?.odometer ? parseInt(last.odometer) : null;
       const lastAction = last?.action?.toLowerCase() || '';
@@ -227,9 +227,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       
   
-      const dueDate = last?.date
-        ? new Date(new Date(last.date).getTime() + intervalDays * 86400000).toLocaleDateString()
-        : '—';
+      const dueDate = formatDate(
+        last?.date ? new Date(new Date(last.date).getTime() + intervalDays * 86400000) : null
+      );
+      
   
       const odoDiff = dueKM !== '—' ? parseInt(dueKM) - odo : null;
       const dueDateObj = last?.date ? new Date(last.date) : null;
@@ -319,14 +320,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         item.addEventListener('click', () => {
           const targetID = item.dataset.type === 'document' ? '#docsTab' : '#maintTab';
           const target = document.querySelector(targetID);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            setTimeout(() => {
-              window.scrollBy(0, -70); // offset for fixed title bar
-            }, 500);
-          }
+      
+          if (!target) return;
+      
+          // Get Y offset relative to full page
+          const yOffset = -70; // Adjust based on your sticky header height
+          const y = target.getBoundingClientRect().top + window.scrollY + yOffset;
+      
+          window.scrollTo({
+            top: y,
+            behavior: 'smooth'
+          });
         });
-      });      
+      });       
     }
   }  
 
@@ -420,9 +426,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="row">
               <span class="issueLabel">File: &nbsp;</span> 
                 <span>
-                ${doc.fileLink
-                  ? `<a href="docs/${vehicleID}/${doc.fileLink}" target="_blank">Open Document</a>`
-                  : `Document not uploaded`}
+                ${
+                  doc.fileLink
+                    ? `<a href="docs/${vehicleID}/${doc.fileLink}" target="_blank">${
+                        doc.fileLink.toLowerCase().endsWith('.jpg') || doc.fileLink.toLowerCase().endsWith('.jpeg')
+                          ? 'View Image'
+                          : 'Open Document'
+                      }</a>`
+                    : 'Document not uploaded'
+                }
+                
               </span>
             </div>
             <div class="row">
@@ -451,4 +464,14 @@ function formatRemainingTime(days) {
   if (remaining) parts.push(`${remaining} day${remaining > 1 ? 's' : ''}`);
 
   return parts.length ? parts.join(', ') : 'Today';
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr);
+  if (isNaN(d)) return '—';
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
 }
