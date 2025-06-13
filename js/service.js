@@ -18,35 +18,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     let dueItems = [];
 
     vehicleIntervals.forEach(interval => {
-      const { component, replaceKM, intervalDays } = interval;
+      const { component, replaceKM, inspectionKM, intervalDays } = interval;
       const history = vehicleMaint
         .filter(m => m.serviceType === component)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
       const last = history[0];
-
+    
       const lastDate = last?.date || '—';
-      const lastOdo = last?.odometer ? parseInt(last.odometer) : null;
-
-      const dueKM = lastOdo !== null ? lastOdo + parseInt(replaceKM) : null;
+      const lastOdo = last?.odometer && !isNaN(parseInt(last.odometer)) ? parseInt(last.odometer) : null;
+    
+      // Dates
       const dueDate = last?.date
         ? new Date(new Date(last.date).getTime() + intervalDays * 86400000)
         : null;
-
-      const remainingKM = dueKM !== null ? dueKM - currentOdo : null;
       const remainingDays = dueDate ? Math.ceil((dueDate - today) / 86400000) : null;
+    
+      // Replacement KM
+      const parsedReplaceKM = !isNaN(parseInt(replaceKM)) ? parseInt(replaceKM) : null;
 
-      if (dueKM !== null && dueDate !== null) {
+      const dueReplaceKM = lastOdo !== null && !isNaN(parsedReplaceKM) ? lastOdo + parsedReplaceKM : null;
+      const remainingReplaceKM = dueReplaceKM !== null ? dueReplaceKM - currentOdo : null;
+    
+      // Inspection KM
+      const parsedInspectKM = !isNaN(parseInt(inspectionKM)) ? parseInt(inspectionKM) : null;
+
+      const dueInspectKM = lastOdo !== null && !isNaN(parsedInspectKM) ? lastOdo + parsedInspectKM : null;
+      const remainingInspectKM = dueInspectKM !== null ? dueInspectKM - currentOdo : null;
+    
+      // Push both if valid
+      if (dueReplaceKM !== null || dueDate) {
         dueItems.push({
-          component,
+          component: `${component} (Replace)`,
           lastDate,
           lastOdo,
-          dueKM,
+          dueKM: dueReplaceKM,
           dueDate,
-          remainingKM,
+          remainingKM: remainingReplaceKM,
+          remainingDays
+        });
+      }
+    
+      if (dueInspectKM !== null || dueDate) {
+        dueItems.push({
+          component: `${component} (Inspect)`,
+          lastDate,
+          lastOdo,
+          dueKM: dueInspectKM,
+          dueDate,
+          remainingKM: remainingInspectKM,
           remainingDays
         });
       }
     });
+    
 
     if (dueItems.length === 0) return;
 
