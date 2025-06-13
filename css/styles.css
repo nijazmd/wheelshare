@@ -153,6 +153,9 @@ tr.danger {
 tr.warning {
   background-color: var(--warning);
 }
+.dateColumn {
+  min-width: 80px;
+}
 
 .popup.hidden {
   display: none;
