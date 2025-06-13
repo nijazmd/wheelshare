@@ -33,20 +33,24 @@
   <h1>Add Maintenance</h1>
 
   <!-- Vehicle Selector -->
-  
-  <!-- Maintenance Form -->
-  <form id="maintenanceForm" class="formGroup">
+  <div class="formGroup">
     <label for="vehicleSelect">Select Vehicle:</label>
     <select id="vehicleSelect"></select>
-    
-    <label for="maintDate">Date:</label>
-    <input type="date" id="maintDate" name="maintDate" required />
+  </div>
 
-    <label for="maintOdometer">Odometer:</label>
-    <input type="number" id="maintOdometer" name="maintOdometer" required />
+  <!-- Maintenance Form -->
+  <form id="maintenanceForm" class="formGroup">
+    <label for="maintDate">Date:
+      <input type="date" id="maintDate" required />
+    </label>
 
-    <label for="workshopName">Workshop:</label>
-    <input type="text" id="workshopName" name="workshopName" />
+    <label for="maintOdometer">Odometer:
+      <input type="number" id="maintOdometer" required />
+    </label>
+
+    <label for="workshopName">Workshop:
+      <input type="text" id="workshopName" />
+    </label>
 
     <div id="serviceItemsContainer"></div>
     
@@ -54,17 +58,20 @@
       <button class="actionBtn small" type="button" id="addServiceItemBtn">Add Another Service Component</button>
     </div>
 
-    <label>Labour Charges:</label>  
-    <input type="number" id="labourCharges" name="labourCharges"/>
+    <label>Labour Charges:
+      <input type="number" id="labourCharges" />
+    </label>  
 
     <datalist id="serviceSuggestions">
     </datalist>
     
     <div class="formGroup totalCostContainer">
-      <label>Other Items Cost:</label>
-      <input type="number" id="otherCost" value="0" name="otherCost" />
-      <label>Total Service Cost:</label>
-      <input type="number" id="totalServiceCost" value="0" name="totalServiceCost" />
+      <label>Other Items Cost:
+        <input type="number" id="otherCost" value="0" />
+      </label>
+      <label>Total Service Cost:
+        <input type="number" id="totalServiceCost" value="0" />
+      </label>
     </div>
 
     <div class="formBtns buttonRow">

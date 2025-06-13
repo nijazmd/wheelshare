@@ -46,7 +46,6 @@ input, select, textarea {
   border: none;
   outline: none;
   box-shadow: none;
-  font-size: 16px;
 }
 a {
   text-decoration: none;
@@ -276,7 +275,7 @@ tr.warning {
   display: none;
 }
 .filterGroup input[type="checkbox"]+label {
-  display: block;
+  display: flex;
   width: fit-content;
   padding: var(--small);
   margin: 0 var(--small) var(--small) 0 ;
@@ -653,7 +652,7 @@ textarea {
 }
 
 /* action type radio group */
-/* .actionGroup input[type="radio"]{
+.actionGroup input[type="radio"]{
   display: none;
 }
 .actionGroup label{
@@ -674,7 +673,7 @@ textarea {
 /* ADD DOCS */
 .docForm label {
   margin-bottom: var(--large);
-} */
+}
 
 /* LOADER */
 .loader {
@@ -727,13 +726,4 @@ textarea {
   to {
     transform: rotate(360deg);
   }
-}
-
-body, html {
-  height: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-form, .formGroup {
-  min-height: 100%;
 }

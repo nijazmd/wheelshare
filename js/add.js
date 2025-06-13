@@ -44,39 +44,29 @@ if (vehicleSelect.value) {
   const addServiceItemBtn = document.getElementById('addServiceItemBtn');
 
   function addServiceItemRow() {
-    function attachFocusWorkaround(row) {
-      const inputs = row.querySelectorAll('input, textarea, select');
-      inputs.forEach(input => {
-        input.addEventListener('touchend', () => {
-          setTimeout(() => {
-            input.focus();
-            input.click(); // Helps trigger the keyboard on iOS PWA
-          }, 100);
-        });
-      });
-    }
-    
     const row = document.createElement('div');
     row.className = 'serviceItemRow';
     row.innerHTML = `
-      <label>Service Item:</label>
-      <input list="serviceSuggestions" class="serviceType" required />
+      <label>Service Item:
+        <input list="serviceSuggestions" class="serviceType" required />
+      </label>
       <label>Action:</label>
       <div class="actionGroup">
-        <input id="replaced" type="radio" name="action_${Date.now()}" value="Replaced" required />
-        <label for="replaced">Replaced</label>
-        <input id="checked" type="radio" name="action_${Date.now()}" value="Checked" />
-        <label for="checked">Checked</label>
-        <input id="cleaned" type="radio" name="action_${Date.now()}" value="Cleaned" />
-        <label for="cleaned">Cleaned</label>
+      <input id="replaced" type="radio" name="action_${Date.now()}" value="Replaced" required />
+      <label for="replaced">Replaced</label>
+      <input id="checked" type="radio" name="action_${Date.now()}" value="Checked" />
+      <label for="checked">Checked</label>
+      <input id="cleaned" type="radio" name="action_${Date.now()}" value="Cleaned" />
+      <label for="cleaned">Cleaned</label>
       </div>    
-      <label>Cost:</label>
-      <input type="number" class="cost" />
-      <label>Notes:</label>
-      <input type="text" class="notes" />
+      <label>Cost:
+        <input type="number" class="cost" />
+      </label>
+      <label>Notes:
+        <input type="text" class="notes" />
+      </label>
     `;
     serviceItemsContainer.appendChild(row);
-    attachFocusWorkaround(row);
     row.querySelector('.cost').addEventListener('input', updateTotalCost);
   }
 
