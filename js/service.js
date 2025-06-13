@@ -123,7 +123,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const vehicleName = `${vehicle.make} ${vehicle.vehicleName}`;
     const vehicleDocs = documents.filter(doc => doc.vehicleID === vehicleID);
 
+    // Find the latest doc per type
+    const latestPerType = {};
+
     vehicleDocs.forEach(doc => {
+      const type = doc.documentType;
+      const expiry = new Date(doc.expiryDate);
+
+      if (!latestPerType[type] || new Date(latestPerType[type].expiryDate) < expiry) {
+        latestPerType[type] = doc;
+      }
+    });
+
+    // Display only latest of each document type
+    Object.values(latestPerType).forEach(doc => {
       const expiryDate = new Date(doc.expiryDate);
       const daysLeft = Math.ceil((expiryDate - today) / 86400000);
 
@@ -142,6 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   });
+
 })();
 
 
