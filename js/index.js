@@ -279,7 +279,9 @@ for (const groupName of orderedKeys) {
     groupSection.className = 'vehicleGroup';
 
     const heading = document.createElement('h2');
-    heading.textContent = groupName;
+    const count = grouped[groupName].length;
+    heading.innerHTML = `${groupName} <span class="filterCount">(${count})</span>`;
+    
     groupSection.appendChild(heading);
 
     const grid = document.createElement('div');

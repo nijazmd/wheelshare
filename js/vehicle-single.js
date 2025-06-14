@@ -132,6 +132,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayValue += " cc";
   }
 
+  if (label === "Power" && value) {
+    displayValue += " bhp";
+  }
+
   if (label === "Torque" && value) {
     displayValue += " Nm";
   }
@@ -198,7 +202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const last = history[0];
   
       const lastDate = formatDate(last?.date);
-      const lastOdo = last?.odometer || '—';
+      const lastOdo = last?.odometer ? `${last.odometer} km` : '—';
       const lastOdoParsed = last?.odometer ? parseInt(last.odometer) : null;
       const lastAction = last?.action?.toLowerCase() || '';
       const isChecked = lastAction === 'checked';
@@ -251,11 +255,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (isOverdue) tr.classList.add('danger');
       else if (isUpcoming) tr.classList.add('warning');
   
+      let nextServiceHTML = '—';
+      if (dueKM !== '—' && dueDate !== '—' && serviceType !== '—') {
+        nextServiceHTML = `
+          ${serviceType} by ${dueKM.toLocaleString()} km<br>
+          on ${dueDate}
+        `;
+      }
+      
       tr.innerHTML = `
         <td>${component}</td>
         <td>${lastDate}<br>${lastOdo}</td>
-        <td>${dueDate}<br>${dueKM}<br>${serviceType}</td>
+        <td>${nextServiceHTML}</td>
       `;
+      
       tableBody.appendChild(tr);
     });
   
@@ -339,19 +352,68 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderIssueReports();
   function renderIssueReports() {
     const issueList = document.getElementById('issueList');
-    const reports = issues.filter(i => i.vehicleID === vehicleID);
+    const reports = issues
+      .filter(i => i.vehicleID === vehicleID && i.isFixed !== 'TRUE') // ✅ only show open issues
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  
     if (reports.length === 0) {
       issueList.innerHTML = '<li>No issues reported.</li>';
       return;
     }
-    reports.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+    issueList.innerHTML = ''; // clear list first
+  
     reports.forEach(r => {
       const li = document.createElement('li');
-    
-      li.innerHTML = `<div class="issueLabel">on ${r.date} ${r.reporter ? `by ${r.reporter}` : ''}</div>${r.issue}`;
+      li.classList.add('issueCard'); // optional for styling
+  
+      const meta = `<div class="issueLabel">on ${r.date} ${r.reporter ? `by ${r.reporter}` : ''}</div>`;
+      const content = `<div class="issueContent">${r.issue}</div>`;
+      const btn = `<button class="nakedBtn markFixedBtn">Mark as Complete</button>`;
+  
+      li.innerHTML = meta + content + btn;
+  
+      const button = li.querySelector('.markFixedBtn');
+      button.addEventListener('click', async () => {
+        const confirmed = confirm("Are you sure you want to mark this issue as complete?");
+        if (!confirmed) return;
+      
+        button.disabled = true;
+        button.textContent = 'Updating...';
+  
+        const params = new URLSearchParams();
+        params.append('type', 'fixIssue');
+        params.append('vehicleID', vehicleID);
+        params.append('issue', r.issue);
+  
+        try {
+          const res = await fetch(
+            'https://script.google.com/macros/s/AKfycbyD89HHxv2EIytHw-SkCnSYCK3w07HLQ24anzoUXiJnFE-l5Z05urBByqxV7fL22II5Rg/exec',
+            { method: 'POST', body: params }
+          );
+          const text = await res.text();
+  
+          if (text.includes('fixed')) {
+            li.remove(); // remove the card
+            if (issueList.children.length === 0) {
+              issueList.innerHTML = '<li>No issues reported.</li>';
+            }
+          } else {
+            alert('Failed to mark as complete: ' + text);
+            button.disabled = false;
+            button.textContent = 'Mark as Complete';
+          }
+        } catch (err) {
+          alert('Error connecting to server.');
+          button.disabled = false;
+          button.textContent = 'Mark as Complete';
+        }
+      });
+  
       issueList.appendChild(li);
-    });    
+    });
   }
+  
 
   renderMaintenanceCards();
   renderMaintenanceHistory();

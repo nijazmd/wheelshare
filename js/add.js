@@ -57,8 +57,8 @@ if (vehicleSelect.value) {
         <label for="replaced_${uniqueID}">Replaced</label>
         <input id="checked_${uniqueID}" type="radio" name="action_${uniqueID}" value="Checked" />
         <label for="checked_${uniqueID}">Checked</label>
-        <input id="cleaned_${uniqueID}" type="radio" name="action_${uniqueID}" value="Cleaned" />
-        <label for="cleaned_${uniqueID}">Cleaned</label>
+        <input id="serviced_${uniqueID}" type="radio" name="action_${uniqueID}" value="Serviced" />
+        <label for="serviced_${uniqueID}">Serviced</label>
       </div>    
       <label>Cost:
         <input type="number" class="cost" />
