@@ -147,7 +147,7 @@ tbody {
   color: var(--white);
   background: var(--dark-gray);
 }
-tr.danger {
+tr.danger, .due-red {
   background-color: var(--danger);
 }
 tr.warning {
@@ -743,3 +743,4 @@ textarea {
     transform: rotate(360deg);
   }
 }
+
